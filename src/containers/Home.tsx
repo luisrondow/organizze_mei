@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Header from "../components/shared/Header";
+import DashboardContainer from "./Dashboard";
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const Home: React.FC = ({ children }) => {
   return (
     <Container>
       <Header />
-      {children}
+      <DashboardContainer />
     </Container>
   );
 };

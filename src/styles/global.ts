@@ -28,6 +28,14 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+  button, input[type="submit"], input[type="reset"] {
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
   a {
     text-decoration: none;
   }

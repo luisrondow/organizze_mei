@@ -1,17 +1,17 @@
 import React from "react";
 import GlobalStyle from "./styles/global";
 import { Router } from "react-router-dom";
-import Home from "./containers/Home";
-import DashboardContainer from "./containers/Dashboard";
-import Login from "./components/Login/Login";
+import Routes from "./routes";
+import history from "./services/history";
 
 function App() {
   return (
     <>
       <GlobalStyle />
-      <Home>
-        <DashboardContainer />
-      </Home>
+      <Router history={history}>
+        <Routes />
+        <GlobalStyle />
+      </Router>
     </>
   );
 }
