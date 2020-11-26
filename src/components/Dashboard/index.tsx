@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { Accounts } from "../../containers/Dashboard";
 import Card from "./Card";
+
+type Props = {
+  userName: string;
+  accounts: Accounts[];
+  totalBalance: number;
+};
 
 const Container = styled.div`
   width: 60%;
@@ -69,120 +76,60 @@ const TitlePaymentBills = styled.div`
   margin-top: 10px;
 `;
 
-const Dashboard: React.FC = () => {
+const Dashboard = ({ userName, accounts, totalBalance }: Props) => {
   return (
     <Container>
       <BalanceCard>
-        <WelcomeText>Olá, Luis Eduardo von Rondow!</WelcomeText>
-        <BalanceValue>R$ 5478,36</BalanceValue>
+        <WelcomeText>Olá, {userName}!</WelcomeText>
+        <BalanceValue>
+          R${" "}
+          {totalBalance.toLocaleString("pt-br", { minimumFractionDigits: 2 })}
+        </BalanceValue>
         <Description>Saldo</Description>
       </BalanceCard>
       <Row>
         <Card title="Minhas contas">
-          <AccountItem>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <span
+          {accounts.map((account) => (
+            <AccountItem key={account.id}>
+              <div
                 style={{
-                  color: "#1c1733",
-                  fontSize: "14px",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-                Banco Inter
-              </span>
+                <span
+                  style={{
+                    color: "#1c1733",
+                    fontSize: "14px",
+                  }}
+                >
+                  {account.bancoOrigem}
+                </span>
+                <span
+                  style={{
+                    color: "#999",
+                    fontSize: "12px",
+                  }}
+                >
+                  {account.name}
+                </span>
+              </div>
               <span
                 style={{
-                  color: "#999",
-                  fontSize: "12px",
+                  color: "#7dde92",
+                  fontSize: "24px",
                 }}
               >
-                Conta Pessoal
+                R${" "}
+                {account.saldo.toLocaleString("pt-br", {
+                  minimumFractionDigits: 2,
+                })}
               </span>
-            </div>
-            <span
-              style={{
-                color: "#7dde92",
-                fontSize: "24px",
-              }}
-            >
-              R$ 1000,00
-            </span>
-          </AccountItem>
-          <AccountItem>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <span
-                style={{
-                  color: "#1c1733",
-                  fontSize: "14px",
-                }}
-              >
-                Nubank
-              </span>
-              <span
-                style={{
-                  color: "#999",
-                  fontSize: "12px",
-                }}
-              >
-                Conta PJ
-              </span>
-            </div>
-            <span
-              style={{
-                color: "#7dde92",
-                fontSize: "24px",
-              }}
-            >
-              R$ 5800,00
-            </span>
-          </AccountItem>
-          <AccountItem>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <span
-                style={{
-                  color: "#1c1733",
-                  fontSize: "14px",
-                }}
-              >
-                Carteira
-              </span>
-              <span
-                style={{
-                  color: "#999",
-                  fontSize: "12px",
-                }}
-              >
-                Outros
-              </span>
-            </div>
-            <span
-              style={{
-                color: "#7dde92",
-                fontSize: "24px",
-              }}
-            >
-              R$ 29,35
-            </span>
-          </AccountItem>
+            </AccountItem>
+          ))}
         </Card>
         <Card title="Contas à pagar">
-        <TitlePaymentBills>
-            Contas vencidas
-          </TitlePaymentBills>
+          <TitlePaymentBills>Contas vencidas</TitlePaymentBills>
           <AccountItem>
             <div
               style={{
@@ -225,9 +172,7 @@ const Dashboard: React.FC = () => {
               R$ 1300,00
             </span>
           </AccountItem>
-          <TitlePaymentBills>
-            Próximas contas
-          </TitlePaymentBills>
+          <TitlePaymentBills>Próximas contas</TitlePaymentBills>
           <AccountItem>
             <div
               style={{
