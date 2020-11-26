@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LoginImage from "../../assets/login.jpeg";
 import Button from "../shared/Button";
 import Input from "../shared/Input";
+import logo from '../../assets/logo_dark.png';
+
+type Props = {
+  handleLogin: (email: string, password: string) => Promise<void>
+}
 
 const Container = styled.div`
   width: 100%;
@@ -27,6 +32,7 @@ const FormContainer = styled.div`
 const LogoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const Image = styled.div`
@@ -39,7 +45,7 @@ const Image = styled.div`
 
 const Form = styled.div`
   width: 100%;
-  margin-top: 10rem;
+  margin-top: 5rem;
   display: flex;
   flex-direction: column;
 `;
@@ -52,18 +58,22 @@ const Link = styled.span`
   cursor: pointer;
 `;
 
-const Login: React.FC = () => {
+const Login = ({ handleLogin }: Props) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <Container>
       <Image />
       <FormContainer>
         <LogoContainer>
+          <img src={logo} alt="Logo"/>
           <h2 style={{ color: "#000000", fontSize: "40px" }}>Bem vindo</h2>
         </LogoContainer>
         <Form>
-          <Input type="email" placeholder="E-mail" />
-          <Input type="password" placeholder="Senha" />
-          <Button>Entrar</Button>
+          <Input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="E-mail" />
+          <Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Senha" />
+          <Button onClick={() => handleLogin(email, password)}>Entrar</Button>
           <Link style={{
             marginTop: '1rem'
           }}>

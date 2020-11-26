@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/shared/Header";
+import history from "../services/history";
 import DashboardContainer from "./Dashboard";
 
 const Container = styled.div`
@@ -11,7 +12,15 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Home: React.FC = ({ children }) => {
+const Home: React.FC = () => {
+  useEffect(() => {
+    const token = sessionStorage.getItem("@token");
+
+    if (!token) {
+      history.push("/login");
+    }
+  });
+
   return (
     <Container>
       <Header />

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import logo from "../../assets/logo_light.png";
+import history from "../../services/history";
 
 type MenuItemProps = {
   clicked: boolean;
@@ -50,15 +52,39 @@ const Header: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    history.push("/login");
+  };
+
   return (
     <Container>
-      <h1>Organizze MEI</h1>
+      <img src={logo} alt="Logo" />
       <Menu>
-        <MenuItem onClick={() => handleClick('dashboard')} clicked={dashboardClicked}>dashboard</MenuItem>
-        <MenuItem onClick={() => handleClick('transaction')} clicked={transactionClicked}>transações</MenuItem>
-        <MenuItem onClick={() => handleClick('report')} clicked={reportClicked}>relatórios</MenuItem>
+        <MenuItem
+          onClick={() => handleClick("dashboard")}
+          clicked={dashboardClicked}
+        >
+          dashboard
+        </MenuItem>
+        <MenuItem
+          onClick={() => handleClick("transaction")}
+          clicked={transactionClicked}
+        >
+          transações
+        </MenuItem>
+        <MenuItem onClick={() => handleClick("report")} clicked={reportClicked}>
+          relatórios
+        </MenuItem>
       </Menu>
-      <h1>Login</h1>
+      <div
+        style={{
+          cursor: "pointer",
+        }}
+        onClick={handleLogout}
+      >
+        <span>Sair &gt;</span>
+      </div>
     </Container>
   );
 };
