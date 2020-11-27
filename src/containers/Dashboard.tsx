@@ -3,7 +3,7 @@ import Dashboard from "../components/Dashboard";
 import api from "../services/api";
 
 export type Accounts = {
-  id: string;
+  id?: string;
   name: string;
   bancoOrigem: string;
   saldo: number;
@@ -37,7 +37,7 @@ const DashboardContainer: React.FC = () => {
     setTotalBalance(total);
   }, [accounts]);
 
-  return <Dashboard {...{ userName, accounts, totalBalance }} />;
+  return <Dashboard {...{ userName, accounts, totalBalance, setAccounts }} />;
 };
 
 export default DashboardContainer;

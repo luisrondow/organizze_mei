@@ -4,6 +4,7 @@ import styled from "styled-components";
 type Props = {
   onClick?: any;
   children?: React.ReactNode;
+  style?: React.CSSProperties;
 };
 
 const Component = styled.button`
@@ -23,8 +24,8 @@ const Component = styled.button`
   margin-bottom: 2rem;
 `;
 
-const Button = ({ onClick, children }: Props) => {
-  return <Component {...{ onClick }}>{children}</Component>;
+const Button = ({ onClick, children, style }: Props) => {
+  return <Component style={style} {...{ onClick }}>{children}</Component>;
 };
 
 export default Button;
