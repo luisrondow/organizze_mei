@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import logo from "../../assets/logo_light.png";
 import history from "../../services/history";
@@ -31,11 +31,14 @@ const MenuItem = styled.div<MenuItemProps>`
   border-bottom: ${(props) => props.clicked && "2px solid #F8FFE5"};
 `;
 
-const Header: React.FC = () => {
-  const [dashboardClicked, setDashboardClicked] = useState(true);
-  const [transactionClicked, setTransactionClicked] = useState(false);
-  const [reportClicked, setReportClicked] = useState(false);
-
+const Header = ({
+  dashboardClicked,
+  setDashboardClicked,
+  transactionClicked,
+  setTransactionClicked,
+  reportClicked,
+  setReportClicked,
+}: any) => {
   const handleClick = (type: string) => {
     if (type === "dashboard") {
       setDashboardClicked(true);

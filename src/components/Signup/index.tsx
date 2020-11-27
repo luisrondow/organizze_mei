@@ -6,7 +6,13 @@ import Input from "../shared/Input";
 import logo from "../../assets/logo_dark.png";
 
 type Props = {
-  handleLogin: (email: string, password: string) => Promise<void>;
+  handleSignUp: (
+    name: string,
+    email: string,
+    password: string,
+    CNPJ: string,
+    passwordConfirmation: string
+  ) => Promise<void>;
 };
 
 const Container = styled.div`
@@ -50,17 +56,13 @@ const Form = styled.div`
   flex-direction: column;
 `;
 
-const Link = styled.a`
-  font-size: 20px;
-  color: #3083dc;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-`;
 
-const Login = ({ handleLogin }: Props) => {
+const SignUp = ({ handleSignUp }: Props) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [CNPJ, setCNPJ] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   return (
     <Container>
@@ -68,33 +70,45 @@ const Login = ({ handleLogin }: Props) => {
       <FormContainer>
         <LogoContainer>
           <img src={logo} alt="Logo" />
-          <h2 style={{ color: "#000000", fontSize: "40px" }}>Bem vindo</h2>
+          <h2 style={{ color: "#000000", fontSize: "40px" }}>Cadastre-se</h2>
         </LogoContainer>
         <Form>
+          <Input
+            onChange={(e) => setName(e.target.value)}
+            type="text"
+            placeholder="Nome"
+          />
           <Input
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="E-mail"
           />
           <Input
+            onChange={(e) => setCNPJ(e.target.value)}
+            type="text"
+            placeholder="CNPJ"
+          />
+          <Input
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Senha"
           />
-          <Button onClick={() => handleLogin(email, password)}>Entrar</Button>
-          <Link
-            href="/signup"
-            style={{
-              marginTop: "1rem",
-            }}
+          <Input
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
+            type="password"
+            placeholder="Confirme sua senha"
+          />
+          <Button
+            onClick={() =>
+              handleSignUp(name, email, password, CNPJ, passwordConfirmation)
+            }
           >
-            Ainda não tem uma conta?
-          </Link>
-          <Link href="/signup">Registre-se agora</Link>
+            Cadastrar
+          </Button>
         </Form>
       </FormContainer>
     </Container>
   );
 };
 
-export default Login;
+export default SignUp;

@@ -4,6 +4,7 @@ import styled from "styled-components";
 type Props = {
   title: string;
   children: React.ReactElement[];
+  setOpenModal: (value: boolean) => void;
 };
 
 const Container = styled.div`
@@ -21,10 +22,34 @@ const Title = styled.h1`
   font-weight: bold;
 `;
 
-const Card = ({ title, children }: Props) => {
+const AddButton = styled.div`
+  height: 20px;
+  width: 20px;
+  background-color: #ff7e7c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Card = ({ title, children, setOpenModal }: Props) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      <Header>
+        <Title>{title}</Title>
+        <AddButton onClick={() => setOpenModal(true)}>+</AddButton>
+      </Header>
       {children}
     </Container>
   );

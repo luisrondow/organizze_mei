@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/shared/Header";
 import history from "../services/history";
 import DashboardContainer from "./Dashboard";
+import TransactionContainer from "./Transactions";
 
 const Container = styled.div`
   display: flex;
@@ -13,6 +14,10 @@ const Container = styled.div`
 `;
 
 const Home: React.FC = () => {
+  const [dashboardClicked, setDashboardClicked] = useState(true);
+  const [transactionClicked, setTransactionClicked] = useState(false);
+  const [reportClicked, setReportClicked] = useState(false);
+
   useEffect(() => {
     const token = sessionStorage.getItem("@token");
 
@@ -23,8 +28,18 @@ const Home: React.FC = () => {
 
   return (
     <Container>
-      <Header />
-      <DashboardContainer />
+      <Header
+        {...{
+          dashboardClicked,
+          setDashboardClicked,
+          transactionClicked,
+          setTransactionClicked,
+          reportClicked,
+          setReportClicked,
+        }}
+      />
+      {dashboardClicked && <DashboardContainer />}
+      {transactionClicked && <TransactionContainer />}
     </Container>
   );
 };

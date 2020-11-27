@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Accounts } from "../../containers/Dashboard";
+import Modal from "./Modal";
 import Card from "./Card";
 
 type Props = {
   userName: string;
   accounts: Accounts[];
+  setAccounts: React.Dispatch<React.SetStateAction<Accounts[]>>
   totalBalance: number;
 };
 
@@ -76,59 +78,62 @@ const TitlePaymentBills = styled.div`
   margin-top: 10px;
 `;
 
-const Dashboard = ({ userName, accounts, totalBalance }: Props) => {
+const Dashboard = ({ userName, accounts, totalBalance, setAccounts }: Props) => {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
-    <Container>
-      <BalanceCard>
-        <WelcomeText>Olá, {userName}!</WelcomeText>
-        <BalanceValue>
-          R${" "}
-          {totalBalance.toLocaleString("pt-br", { minimumFractionDigits: 2 })}
-        </BalanceValue>
-        <Description>Saldo</Description>
-      </BalanceCard>
-      <Row>
-        <Card title="Minhas contas">
-          {accounts.map((account) => (
-            <AccountItem key={account.id}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <span
+    <>
+      <Container>
+        <BalanceCard>
+          <WelcomeText>Olá, {userName}!</WelcomeText>
+          <BalanceValue>
+            R${" "}
+            {totalBalance.toLocaleString("pt-br", { minimumFractionDigits: 2 })}
+          </BalanceValue>
+          <Description>Saldo</Description>
+        </BalanceCard>
+        <Row>
+          <Card title="Minhas contas" setOpenModal={setOpenModal}>
+            {accounts.map((account, index) => (
+              <AccountItem key={index}>
+                <div
                   style={{
-                    color: "#1c1733",
-                    fontSize: "14px",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                 >
-                  {account.bancoOrigem}
-                </span>
+                  <span
+                    style={{
+                      color: "#1c1733",
+                      fontSize: "14px",
+                    }}
+                  >
+                    {account.name}
+                  </span>
+                  <span
+                    style={{
+                      color: "#999",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {account.bancoOrigem}
+                  </span>
+                </div>
                 <span
                   style={{
-                    color: "#999",
-                    fontSize: "12px",
+                    color: "#7dde92",
+                    fontSize: "24px",
                   }}
                 >
-                  {account.name}
+                  R${" "}
+                  {account.saldo.toLocaleString("pt-br", {
+                    minimumFractionDigits: 2,
+                  })}
                 </span>
-              </div>
-              <span
-                style={{
-                  color: "#7dde92",
-                  fontSize: "24px",
-                }}
-              >
-                R${" "}
-                {account.saldo.toLocaleString("pt-br", {
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-            </AccountItem>
-          ))}
-        </Card>
-        <Card title="Contas à pagar">
+              </AccountItem>
+            ))}
+          </Card>
+          {/* <Card title="Contas à pagar">
           <TitlePaymentBills>Contas vencidas</TitlePaymentBills>
           <AccountItem>
             <div
@@ -299,9 +304,11 @@ const Dashboard = ({ userName, accounts, totalBalance }: Props) => {
               R$ 250,00
             </span>
           </AccountItem>
-        </Card>
-      </Row>
-    </Container>
+        </Card> */}
+        </Row>
+      </Container>
+      <Modal open={openModal} setOpen={setOpenModal} accounts={accounts} setAccounts={setAccounts} />
+    </>
   );
 };
 
