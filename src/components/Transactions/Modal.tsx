@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import closeIcon from "../../assets/close.svg";
 import Button from "../shared/Button";
 import Input from "../shared/Input";
+import DatePicker from "react-datepicker";
+import Select from "react-select";
+import { Accounts } from "../../containers/Dashboard";
+import api from "../../services/api";
+import { CashFlow } from "../../containers/Transactions";
 
 type Props = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isExpense: boolean;
+  cashFlows: CashFlow[];
+  setCashFlows: React.Dispatch<React.SetStateAction<CashFlow[]>>;
 };
 
 const Container = styled.div<{ open: boolean }>`
@@ -42,8 +49,59 @@ const Row = styled.div`
   justify-content: space-between;
 `;
 
-const Modal = ({ open, setOpen, isExpense }: Props) => {
-  const handleSubmit = () => setOpen(false);
+const Modal = ({
+  open,
+  setOpen,
+  isExpense,
+  cashFlows,
+  setCashFlows,
+}: Props) => {
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [date, setDate] = useState<any>(new Date());
+  const [options, setOptions] = useState<any[]>([]);
+  const [accountId, setAccountId] = useState("");
+  const [category, setCategory] = useState("");
+  const [moreInfos, setMoreInfos] = useState("");
+  const [accounts, setAccounts] = useState<Accounts[]>([]);
+
+  useEffect(() => {
+    const userId = sessionStorage.getItem("@user_id");
+    api
+      .get(`/accounts/${userId}`)
+      .then((res) => {
+        setAccounts(res.data.accounts);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  const handleSubmit = () => {
+    api
+      .post("/cash-flow", {
+        description,
+        price,
+        date: date.toString(),
+        type: isExpense ? "despesa" : "receita",
+        accountId,
+        category,
+        moreInfos,
+      })
+      .then((res) => {
+        setCashFlows([...cashFlows, res.data.cashFlow]);
+        setOpen(false);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    const aux: { value: string | undefined; label: string }[] = [];
+    accounts.map((account) =>
+      aux.push({ value: account.id, label: account.name })
+    );
+
+    setOptions([...aux]);
+  }, [accounts]);
+
   return (
     <Container open={open}>
       <div>
@@ -64,16 +122,51 @@ const Modal = ({ open, setOpen, isExpense }: Props) => {
         />
       </div>
       <Form>
-        <Input type="text" placeholder="Descrição" />
+        <Input
+          type="text"
+          placeholder="Descrição"
+          onChange={(e) => setDescription(e.target.value)}
+        />
         <Row>
-          <Input type="text" placeholder="Preço" />
-          <Input type="text" placeholder="Data" />
+          <Input
+            type="text"
+            placeholder="Preço"
+            onChange={(e) => setPrice(Number(e.target.value))}
+          />
+          <DatePicker selected={date} onChange={(date) => setDate(date)} />
         </Row>
+        <div
+          style={{
+            marginBottom: "2rem",
+          }}
+        >
+          <Select
+            defaultValue={options[0]}
+            styles={{
+              option: (provided, state) => ({
+                ...provided,
+                color: state.isSelected ? "red" : "blue",
+                padding: 20,
+              }),
+            }}
+            options={options}
+            onChange={(selectedOption) =>
+              setAccountId(selectedOption.value || "")
+            }
+          />
+        </div>
         <Row>
-          <Input type="text" placeholder="Conta" />
-          <Input type="text" placeholder="Categoria" />
+          <Input
+            type="text"
+            placeholder="Categoria"
+            onChange={(e) => setCategory(e.target.value)}
+          />
         </Row>
-        <Input type="text" placeholder="Mais informações" />
+        <Input
+          type="text"
+          placeholder="Mais informações"
+          onChange={(e) => setMoreInfos(e.target.value)}
+        />
         <Button
           onClick={handleSubmit}
           style={{

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 type Props = {
   type: string;
-  placeholder: string;
+  placeholder?: string;
   onChange?: ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
 };
 

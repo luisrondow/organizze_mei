@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { CashFlow } from "../../containers/Transactions";
+import { formatISODate } from "../../utils/formatters";
 import BackgroundOverlay from "../shared/BackgroundOverlay";
 import Modal from "./Modal";
 
 type Props = {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  cashFlows: CashFlow[];
+  setCashFlows: React.Dispatch<React.SetStateAction<CashFlow[]>>;
 };
 
 const Container = styled.div`
@@ -65,8 +69,26 @@ const Ball = styled.div<{ payed: boolean }>`
   margin-right: 8px;
 `;
 
-const Transactions = ({ openModal, setOpenModal }: Props) => {
+const Transactions = ({
+  openModal,
+  setOpenModal,
+  cashFlows,
+  setCashFlows,
+}: Props) => {
   const [isExpense, setIsExpense] = useState(false);
+
+  const handleTotal = () => {
+    let soma = 0;
+    cashFlows.map((cashFlow) => {
+      if (cashFlow.type === "receita") {
+        soma += cashFlow.price;
+      } else {
+        soma -= cashFlow.price;
+      }
+    });
+
+    return soma;
+  };
 
   return (
     <>
@@ -104,21 +126,51 @@ const Transactions = ({ openModal, setOpenModal }: Props) => {
               </AddButton>
             </div>
           </Row>
+          {cashFlows.map((cashFlow) => (
+            <Row
+              style={{
+                paddingTop: "2rem",
+              }}
+            >
+              <Description>
+                <Ball payed={true} />
+                <h3>{`${cashFlow.description} (${formatISODate(
+                  cashFlow.date
+                )})`}</h3>
+              </Description>
+              <Price expense={cashFlow.type === "despesa"}>
+                R${" "}
+                {cashFlow.price.toLocaleString("pt-br", {
+                  minimumFractionDigits: 2,
+                })}
+              </Price>
+            </Row>
+          ))}
           <Row
             style={{
               paddingTop: "2rem",
             }}
           >
             <Description>
-              <Ball payed={true} />
-              <h3>Aluguel (17/12)</h3>
+              <h3>Total</h3>
             </Description>
-            <Price expense={false}>R$ 1200,00</Price>
+            <Price expense={handleTotal() < 0}>
+              R${" "}
+              {handleTotal().toLocaleString("pt-br", {
+                minimumFractionDigits: 2,
+              })}
+            </Price>
           </Row>
         </TransactionCard>
       </Container>
       <BackgroundOverlay openModal={openModal} />
-      <Modal isExpense={isExpense} open={openModal} setOpen={setOpenModal} />
+      <Modal
+        isExpense={isExpense}
+        open={openModal}
+        setOpen={setOpenModal}
+        cashFlows={cashFlows}
+        setCashFlows={setCashFlows}
+      />
     </>
   );
 };
