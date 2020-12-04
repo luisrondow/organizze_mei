@@ -21,11 +21,11 @@ jobs:
       env:
         CI: true
     - name: Publish to Github Packages Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: luisrondow/organizze_mei@master
       with:
         name: my_github_username/my_repository_name/my_image_name
         registry: docker.pkg.github.com
         username: ${{ secrets.USERNAME_GH }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        dockerfile: Dockerfile-prod
+        dockerfile: Dockerfile
         tags: latest
