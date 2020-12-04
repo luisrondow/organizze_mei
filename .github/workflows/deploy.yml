@@ -20,7 +20,7 @@ jobs:
       env:
         CI: true
     - name: Publish to Github Packages Registry
-      uses: luisrondow/organizze_mei@master
+      uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: luisrondow/organizze_mei/organizze_mei_tis
         registry: docker.pkg.github.com
