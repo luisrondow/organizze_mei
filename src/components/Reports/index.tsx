@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   BarChart,
@@ -37,13 +37,6 @@ const Title = styled.h2`
   margin-bottom: 1rem;
 `;
 
-const data = [
-  { name: "Aluguel", value: 400 },
-  { name: "Impostos", value: 300 },
-  { name: "Aparelhos de Informática", value: 300 },
-  { name: "Outros", value: 200 },
-];
-
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const RADIAN = Math.PI / 180;
@@ -73,12 +66,12 @@ const renderCustomizedLabel = ({
   );
 };
 
-const Reports: React.FC = () => {
+const Reports = ({ receitasData, despesaData, categoriaData }: any) => {
   return (
     <Container>
       <ChartCard>
         <Title>Receitas nos últimos 6 meses</Title>
-        <BarChart width={450} height={300} data={monthData}>
+        <BarChart width={450} height={300} data={receitasData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
@@ -88,12 +81,12 @@ const Reports: React.FC = () => {
       </ChartCard>
       <ChartCard>
         <Title>Despesa nos últimos 6 meses</Title>
-        <BarChart width={450} height={300} data={monthData}>
+        <BarChart width={450} height={300} data={despesaData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Bar dataKey="receita" fill="#ff7e7c" />
+          <Bar dataKey="despesa" fill="#ff7e7c" />
         </BarChart>
       </ChartCard>
       <ChartCard>
@@ -130,7 +123,7 @@ const Reports: React.FC = () => {
           <Tooltip />
           <Legend />
           <Pie
-            data={data}
+            data={categoriaData}
             cx={250}
             cy={120}
             labelLine={false}
@@ -139,7 +132,7 @@ const Reports: React.FC = () => {
             fill="#8884d8"
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {categoriaData.map((entry: any, index: any) => (
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}

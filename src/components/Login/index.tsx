@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const FormContainer = styled.div`
   width: 50%;
-  height: 100vh;
+  height: 150vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,10 +37,10 @@ const LogoContainer = styled.div`
 
 const Image = styled.div`
   width: 50%;
-  height: 100vh;
+  height: 150vh;
   background-image: url(${LoginImage});
   background-repeat: no-repeat;
-  background-size: auto 100vh;
+  background-size: auto 150vh;
 `;
 
 const Form = styled.div`
