@@ -4,6 +4,7 @@ import Header from "../components/shared/Header";
 import history from "../services/history";
 import DashboardContainer from "./Dashboard";
 import TransactionContainer from "./Transactions";
+import ReportContainer from "./Reports";
 
 const Container = styled.div`
   display: flex;
@@ -40,6 +41,7 @@ const Home: React.FC = () => {
       />
       {dashboardClicked && <DashboardContainer />}
       {transactionClicked && <TransactionContainer />}
+      {reportClicked && <ReportContainer />}
     </Container>
   );
 };
