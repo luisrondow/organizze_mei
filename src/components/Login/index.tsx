@@ -6,7 +6,8 @@ import Input from "../shared/Input";
 import logo from "../../assets/logo_dark.png";
 
 type Props = {
-  handleLogin: (email: string, password: string) => Promise<void>;
+  handleLogin: (e: any, email: string, password: string) => Promise<void>;
+  error: boolean;
 };
 
 const Container = styled.div`
@@ -16,7 +17,7 @@ const Container = styled.div`
   background-color: #fff;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   width: 50%;
   height: 150vh;
   display: flex;
@@ -58,7 +59,13 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
-const Login = ({ handleLogin }: Props) => {
+const Error = styled.text`
+  font-size: 20px;
+  color: #b9314f;
+  margin-bottom: 32px;
+`;
+
+const Login = ({ handleLogin, error }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -81,7 +88,10 @@ const Login = ({ handleLogin }: Props) => {
             type="password"
             placeholder="Senha"
           />
-          <Button onClick={() => handleLogin(email, password)}>Entrar</Button>
+          <Button onClick={(e: any) => handleLogin(e, email, password)}>
+            Entrar
+          </Button>
+          {error && <Error>Email e/ou senha incorretos.</Error>}
           <Link
             href="/signup"
             style={{
